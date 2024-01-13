@@ -1,0 +1,312 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"		xmlns:viewmodels="using:FaceRegistrator.ViewModels"
+        xmlns:models="using:FaceRegistrator.Models"	    xmlns:skiaimageview="using:SkiaImageView"
+		mc:Ignorable="d"
+		Width="1024" Height="720"
+		WindowStartupLocation="CenterScreen"
+        x:Class="FaceRegistrator.Views.MainWindow"
+        x:DataType="viewmodels:MainWindowViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+		FontSize="14"
+        Title="ADU ATKI: Face Registrator">
+
+	<Window.DataContext>
+		<viewmodels:MainWindowViewModel/>
+	</Window.DataContext>
+
+	<Grid
+		Margin="4"
+		RowDefinitions="auto,*"
+		ColumnDefinitions="0.5*,*">
+		<Grid
+			Grid.Column="0"
+			Grid.RowSpan="2"
+			RowDefinitions="auto, auto, *"
+			Background="AliceBlue">
+			<Expander
+				Grid.Row="0"
+				HorizontalAlignment="Stretch"
+				Header="Sozlamalar"
+				ExpandDirection="Down"
+				IsExpanded="True">
+				<StackPanel>
+					<DockPanel
+						LastChildFill="True">
+						<TextBlock
+							DockPanel.Dock="Left"
+							Text="IP:  "
+							VerticalAlignment="Center"/>
+						<Button
+							Margin="4 0 0 0"
+							DockPanel.Dock="Right"
+							VerticalAlignment="Stretch"
+							Command="{Binding RefreshDevicesCommand}">
+							<Image
+								Width="16" Height="16"
+								Source="{SvgImage /Assets/Icons/refresh.svg}"/>
+						</Button>
+						<TextBox
+							VerticalContentAlignment="Center"
+							Text="{Binding HostName}"/>
+					</DockPanel>
+					<Line Height="4"/>
+					<DockPanel
+						LastChildFill="True">
+						<TextBlock
+							DockPanel.Dock="Left"
+							Text="Kameralar: "
+							VerticalAlignment="Center"/>
+						<ComboBox
+							PlaceholderForeground="Gray"
+						    PlaceholderText="Kamerani tanglang..."
+							HorizontalAlignment="Stretch"
+							SelectedItem="{Binding SelectedCameraDevice}"
+							ItemsSource="{Binding CameraDevices}"/>
+					</DockPanel>
+					<Line Height="4"/>
+					<DockPanel
+						LastChildFill="True">
+						<TextBlock
+							DockPanel.Dock="Left"
+							Text="Formatlar:  "
+							VerticalAlignment="Center"/>
+						<ComboBox
+							PlaceholderForeground="Gray"
+						    PlaceholderText="Formatni tanglang..."
+							HorizontalAlignment="Stretch"
+							SelectedItem="{Binding SelectedCameraFormat}"
+							ItemsSource="{Binding CameraFormats}"/>
+					</DockPanel>
+					<Line Height="4"/>
+					<Button
+						Command="{Binding ConnectCameraDeviceCommand}"
+						HorizontalAlignment="Stretch"
+						HorizontalContentAlignment="Center"
+						VerticalContentAlignment="Center">
+						<DockPanel
+							LastChildFill="True">
+							<Image
+								Height="16"
+								Width="16"
+								Source="{SvgImage /Assets/Icons/camera.svg}"/>
+							<TextBlock
+								Margin="4 0 0 0"
+								VerticalAlignment="Center"
+								Text="Kamerani ulash"/>
+						</DockPanel>
+					</Button>
+				</StackPanel>
+			</Expander>
+			<StackPanel
+				Margin="4"
+				Grid.Row="1">
+				<Line Height="4"/>
+				<DockPanel
+					LastChildFill="True">
+					<Button
+						Margin="0 0 4 0"
+						DockPanel.Dock="Left"
+						VerticalAlignment="Stretch"
+						Command="{Binding RequestGroupsCommand}">
+						<Image
+							Width="16" Height="16"
+							Source="{SvgImage /Assets/Icons/cloud-download-alt.svg}"/>
+					</Button>
+					<TextBlock
+						VerticalAlignment="Center"
+						Text="Guruh: "/>
+				</DockPanel>
+				<ComboBox
+					PlaceholderForeground="Gray"
+					PlaceholderText="Guruhni tanglang..."
+					IsTextSearchEnabled="True"
+					SelectedItem="{Binding SelectedGroup}"
+					ItemsSource="{Binding Groups}"
+					HorizontalAlignment="Stretch"/>
+				<Line Height="4"/>
+				<DockPanel
+					LastChildFill="True">
+					<Button
+						Margin="0 0 4 0"
+						DockPanel.Dock="Left"
+						VerticalAlignment="Stretch"
+						Command="{Binding RequestStudentsCommand}">
+						<Image
+							Width="16" Height="16"
+							Source="{SvgImage /Assets/Icons/cloud-download-alt.svg}"/>
+					</Button>
+					<TextBlock
+						VerticalAlignment="Center"
+						Text="F.I.O.:   "/>
+				</DockPanel>
+				<AutoCompleteBox
+					ZIndex="1"
+					ItemsSource="{Binding Students}"
+					SelectedItem="{Binding SelectedStudent}"
+					IsTextCompletionEnabled="True"
+					FontSize="12"
+					Watermark="Familiya ism kiriting...">
+					<AutoCompleteBox.ItemTemplate>
+						<DataTemplate DataType="models:Student">
+							<TextBlock Text="{Binding}" Padding="2" Margin="0"
+								   Classes.Registred="{Binding IsFaceRegistred}"
+								   Classes.Normal="{Binding !IsFaceRegistred}">
+								<TextBlock.Styles>
+									<Style Selector="TextBlock.Registred">
+										<Style.Setters>
+											<Setter Property="Foreground" Value="Green"/>
+										</Style.Setters>
+									</Style>
+									<Style Selector="TextBlock.Normal">
+										<Style.Setters>
+											<Setter Property="Foreground" Value="Black"/>
+										</Style.Setters>
+									</Style>
+								</TextBlock.Styles>
+							</TextBlock>
+						</DataTemplate>
+					</AutoCompleteBox.ItemTemplate>
+				</AutoCompleteBox>
+				<Line Height="4"/>
+				<Button
+					Command="{Binding StartOrStopCapturingCommand}"
+					HorizontalAlignment="Stretch"
+					HorizontalContentAlignment="Center"
+					VerticalContentAlignment="Center">
+					<DockPanel
+						LastChildFill="True">
+						<Svg
+							Width="16" Height="16"
+							Path="/Assets/Icons/video-camera.svg"/>
+						<TextBlock
+							Margin="4 0 0 0"
+							VerticalAlignment="Center"
+							Text="{Binding CameraActionButtonTitle}"/>
+					</DockPanel>
+				</Button>
+				<Button
+					Command="{Binding SendPicturesToServerCommand}"
+					HorizontalAlignment="Stretch"
+					HorizontalContentAlignment="Center"
+					VerticalContentAlignment="Center">
+					<DockPanel
+						LastChildFill="True">
+						<Svg
+							Width="16" Height="16"
+							Path="/Assets/Icons/cloud-upload-alt.svg"/>
+						<TextBlock
+							Margin="4 0 0 0"
+							VerticalAlignment="Center"
+							Text="Rasmlarni serverga yuborish"/>
+					</DockPanel>
+				</Button>
+				<Line Height="4"/>
+				<Button
+					Command="{Binding TakePictureCommand}"
+					HorizontalAlignment="Stretch"
+					HorizontalContentAlignment="Center"
+					VerticalContentAlignment="Center">
+					<DockPanel
+						LastChildFill="True">
+						<Svg
+							Width="16" Height="16"
+							Path="/Assets/Icons/add-image.svg"/>
+						<TextBlock
+							Margin="4 0 0 0"
+							VerticalAlignment="Center"
+							Text="Rasmga olish"/>
+					</DockPanel>
+				</Button>
+				<Button
+					Command="{Binding RemovePictureCommand}"
+					HorizontalAlignment="Stretch"
+					HorizontalContentAlignment="Center"
+					VerticalContentAlignment="Center">
+					<DockPanel
+						LastChildFill="True">
+						<Svg
+							Width="16" Height="16"
+							Path="/Assets/Icons/image-slash.svg"/>
+						<TextBlock
+							Margin="4 0 0 0"
+							VerticalAlignment="Center"
+							Text="Rasmni o'chirish"/>
+					</DockPanel>
+				</Button>
+				<Line Height="4"/>
+			</StackPanel>
+			<ListBox
+				Grid.Row="2"
+				SelectedItem="{Binding SelectedPicture}"
+				SelectionMode="Single"
+				ItemsSource="{Binding Pictures}">
+				<ListBox.ItemTemplate>
+					<DataTemplate>
+						<skiaimageview:SKImageView
+							HorizontalAlignment="Stretch"
+							Stretch="Uniform"
+							Source="{Binding}"
+							Margin="4"/>
+					</DataTemplate>
+				</ListBox.ItemTemplate>
+				<ListBox.ItemsPanel>
+					<ItemsPanelTemplate>
+						<StackPanel/>
+					</ItemsPanelTemplate>
+				</ListBox.ItemsPanel>
+			</ListBox>
+		</Grid>
+		<Grid
+			Margin="4"
+			Grid.Column="1"
+			Grid.Row="0"
+			Background="#ffdddd">
+			<Expander
+				ExpandDirection="Down"
+				VerticalAlignment="Stretch"
+				HorizontalAlignment="Stretch">
+				<Expander.Header>
+					<DockPanel LastChildFill="True">
+						<Button Content="Tozalash" DockPanel.Dock="Right" Command="{Binding ClearErrorsCommand}"/>
+						<TextBlock Text="Xatoliklar" VerticalAlignment="Center"/>
+					</DockPanel>
+				</Expander.Header>
+				<DockPanel
+					LastChildFill="True">
+					<TextBox
+						Background="White"
+						Foreground="Red"
+						BorderBrush="Red"
+						DockPanel.Dock="Bottom"
+						IsReadOnly="True"
+						Height="80"
+						MaxLines="100"
+						SelectionBrush="AliceBlue"
+						ScrollViewer.VerticalScrollBarVisibility="Auto"
+						ScrollViewer.HorizontalScrollBarVisibility="Auto"
+						Text="{Binding SelectedErrorText}"/>
+					<ListBox
+						Padding="4"
+						Height="120"
+						Background="White"
+						Foreground="Red"
+						SelectedItem="{Binding SelectedErrorText}"
+						ItemsSource="{Binding Errors}"/>
+				</DockPanel>
+			</Expander>
+		</Grid>
+		<Grid
+			Grid.Column="1"
+			Grid.Row="1"
+			Background="#ddddff">
+			<skiaimageview:SKImageView
+				VerticalAlignment="Stretch"
+				HorizontalAlignment="Stretch"
+				Stretch="Uniform"
+				Source="{Binding FrameImage}"/>
+		</Grid>
+	</Grid>
+	
+</Window>
