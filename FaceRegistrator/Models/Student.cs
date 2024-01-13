@@ -22,7 +22,7 @@ namespace FaceRegistrator.Models
 
         public override string? ToString()
         {
-            return $"{Fullname} (ID: {ID}, Registered: {IsFaceRegistred})";
+            return $"{Fullname} (ID: {ID}, Status: {(IsFaceRegistred == 1 ? "OK" : "NO")})";
         }
     }
 }

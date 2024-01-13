@@ -10,15 +10,18 @@ namespace FaceRegistrator.Models
         [JsonProperty("name")]
         public string Name { get; set; }
 
-        public Group(int id, string name)
+        [JsonProperty("course")]
+        public short Course { get; set; }
+        public Group(int id, string name, short course)
         {
             ID = id;
             Name = name;
+            Course = course;
         }
 
         public override string? ToString()
         {
-            return $"{Name} (ID: {ID})";
+            return $"{Course} - kurs, {Name} guruh (ID: {ID})";
         }
     }
 }

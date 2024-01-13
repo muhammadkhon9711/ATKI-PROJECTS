@@ -10,6 +10,7 @@
         x:DataType="viewmodels:MainWindowViewModel"
         Icon="/Assets/avalonia-logo.ico"
 		FontSize="14"
+		FontFamily="Roboto"
         Title="ADU ATKI: Face Registrator">
 
 	<Window.DataContext>
@@ -146,13 +147,16 @@
 					ItemsSource="{Binding Students}"
 					SelectedItem="{Binding SelectedStudent}"
 					IsTextCompletionEnabled="True"
-					FontSize="12"
 					Watermark="Familiya ism kiriting...">
 					<AutoCompleteBox.ItemTemplate>
 						<DataTemplate DataType="models:Student">
-							<TextBlock Text="{Binding}" Padding="2" Margin="0"
-								   Classes.Registred="{Binding IsFaceRegistred}"
-								   Classes.Normal="{Binding !IsFaceRegistred}">
+							<TextBlock
+								Text="{Binding}"
+								FontSize="12"
+								Padding="2"
+								Margin="0"
+								Classes.Registred="{Binding IsFaceRegistred}"
+								Classes.Normal="{Binding !IsFaceRegistred}">
 								<TextBlock.Styles>
 									<Style Selector="TextBlock.Registred">
 										<Style.Setters>
