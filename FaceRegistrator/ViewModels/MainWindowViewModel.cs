@@ -102,6 +102,9 @@ namespace FaceRegistrator.ViewModels
         private VideoCharacteristics? selectedCameraFormat;
         #endregion
         
+       
+
+
 
         #region Property/Members
         // Members
