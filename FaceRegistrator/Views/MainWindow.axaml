@@ -55,6 +55,18 @@
 					<Line Height="4"/>
 					<DockPanel
 						LastChildFill="True">
+						<CheckBox
+							IsEnabled="False"
+							Content="OpenCV WebCamera"
+							IsChecked="{Binding UseOpenCV}"/>
+						<NumericUpDown
+							IsEnabled="{Binding UseOpenCV}"
+							Value="{Binding DeviceNumber}"
+							Margin="4 0 0 0"/>
+					</DockPanel>
+					<Line Height="4"/>
+					<DockPanel
+						LastChildFill="True">
 						<TextBlock
 							DockPanel.Dock="Left"
 							Text="Kameralar: "
